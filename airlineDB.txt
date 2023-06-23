@@ -1,0 +1,102 @@
+drop database airlineDB;
+create database airlineDB;
+
+create table Airline(
+name		varchar(50) not null,
+AirlineCode	char(2) not null,
+primary key(AirlineCode));
+
+create table AirplaneType(
+TypeName	varchar(50) not null,
+MaxSeatNum	int not null,
+Company		varchar(50) not null,
+primary key(TypeName));
+
+create table Airplane(
+AirplaneID	varchar(30) not null,
+BuildYear	int not null,
+AirlineCODE	char(2),
+TypeNAME	varchar(50),
+primary key(AirplaneID),
+foreign key(AirlineCODE) references Airline(AirlineCode),
+foreign key(TypeNAME) references AirplaneType(TypeName));
+
+create table Airport(
+AirportCode	char(3) not null,
+name		varchar(100) not null,
+province	varchar(30) not null,
+City		varchar(30) not null,
+primary key(AirportCode));
+
+create table Flight(
+FlightNumber	char(3) not null,
+DayOfWeek	varchar(10) not null,
+AirlineCODE	char(2) not null,
+ActualArrive	time,
+ScheduledArive	time,
+AriveAirportCODE	char(3),
+ActualDepart	time,
+ScheduledDepart	time,
+DepartAirportCODE	char(3),
+AirplaneCODE	varchar(30),
+primary key(FlightNumber, AirlineCode),
+foreign key(AirlineCODE) references Airline(AirlineCode),
+foreign key(AriveAirportCODE) references Airport(AirportCode),
+foreign key(DepartAirportCODE) references Airport(AirportCode),
+foreign key(AirplaneCODE) references Airplane(AirplaneID));
+
+create table handle(
+AirportCODE	char(3) not null,
+TypeNAME	varchar(50) not null,
+primary key(AirportCODE, TypeNAME),
+foreign key(AirportCODE) references Airport(AirportCode),
+foreign key(TypeNAME) references AirplaneType(TypeName));
+
+insert into Airline values
+('Air Canada','AC'),
+('Air China','CA'),
+('Air France','AF'),
+('Japan Airlines','JL'),
+('Virgin Atlantic','vs')
+;
+
+insert into AirplaneType values
+('Boeing777',210,'Boeing'),
+('Boeing787',230,'Boeing'),
+('Boeing747',205,'Boeing'),
+('AirbusA321',180,'Airbus'),
+('AirbusA320',235,'Airbus')
+;
+
+insert into Airplane values
+('SD7595',2009,'CA','Boeing777'),
+('FG2393',2011,'AC','Boeing787'),
+('GH3587',2013,'AF','AirbusA321'),
+('JFD342',2007,'VS','Boeing747'),
+('SDW519',2012,'JL','AirbusA320')
+;
+
+
+insert into Airport values
+('JFK','John F. Kennedy International Airport','New York','New York City'),
+('YYZ','Toronto Pearson International Airport','Ontario','Toronto'),
+('YVR','Vancouver International Airport','British Columbia','Vancouver'),
+('YYC','Calgary International Airport','Alberta','Calgary'),
+('CAN','Guangzhou Baiyun International Airport','Guangdong','Guangzhou')
+;
+
+insert into FLight values
+('356','Monday','CA','14:32:21','14:32:21','YYC','18:33:52','18:30:00','CAN','GH3587'),
+('457','Friday','VS','12:24:42','12:24:42','YYZ','19:14:32','19:15:00','YYC','SD7595'),
+('234','Sunday','AC','20:53:07','20:50:00','JFK','01:47:51','01:45:00','YYZ','SDW519'),
+('187','Wednesday','AF','11:12:27','11:00:00','YVR','15:36:34','15:35:00','JFK','FG2393'),
+('358','Monday','JL','18:46:19','18:45:00','CAN','22:33:15','22:30:00','YVR','JFD342')
+;
+
+insert into handle values
+('YYZ','AirbusA321'),
+('YVR','Boeing777'),
+('CAN','Boeing747'),
+('JFK','AirbusA320'),
+('YYC','Boeing787')
+;
